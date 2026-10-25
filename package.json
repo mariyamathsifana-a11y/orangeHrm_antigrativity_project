@@ -1,0 +1,26 @@
+{
+  "name": "project-antigravity",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "npx playwright test",
+    "test:login:chrome": "npx playwright test tests/logintest.spec.ts --project=chromium",
+    "test:login:firefox": "npx playwright test tests/logintest.spec.ts --project=firefox",
+    "test:admin:chrome": "npx playwright test tests/admintest.spec.ts --project=chromium",
+    "test:admin:firefox": "npx playwright test tests/admintest.spec.ts --project=firefox",
+    "test:directory:chrome": "npx playwright test tests/directorytest.spec.ts --project=chromium",
+    "test:directory:firefox": "npx playwright test tests/directorytest.spec.ts --project=firefox",
+    "test:chrome": "npx playwright test --project=chromium",
+    "test:firefox": "npx playwright test --project=firefox",
+    "report": "npx playwright show-report"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "@playwright/test": "^1.64.1",
+    "typescript": "^7.0.2"
+  }
+}
