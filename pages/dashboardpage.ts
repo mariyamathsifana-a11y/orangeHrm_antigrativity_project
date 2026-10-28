@@ -28,12 +28,17 @@ export class DashboardPage {
 
     // User Dropdown & Logout Locators
     userDropdown = '.oxd-userdropdown-tab';
+    userDropdownName = '.oxd-userdropdown-name';
     logoutLink = 'a[href*="/auth/logout"], .oxd-userdropdown-link:has-text("Logout")';
     loginButton = 'button[type="submit"]';
 
     // Navigation Action
     async navigateToDashboard() {
-        await this.page.goto('https://opensource-demo.orangehrmlive.com/web/index.php/dashboard/index');
+        await this.page.goto('https://opensource-demo.orangehrmlive.com/web/index.php/dashboard/index', { waitUntil: 'domcontentloaded' });
+        await this.waitForPageLoaded();
+    }
+
+    async waitForPageLoaded() {
         await this.page.waitForURL(/.*dashboard\/index.*/);
         await this.waitForSpinnerToDisappear();
         await this.page.locator(this.pageHeader).waitFor({ state: 'visible', timeout: 15000 });
@@ -57,10 +62,16 @@ export class DashboardPage {
 
     // Widget Verification Methods
     async isWidgetsGridVisible(): Promise<boolean> {
-        return await this.page.locator(this.widgetsGrid).isVisible();
+        try {
+            await this.page.locator(this.widgetsGrid).waitFor({ state: 'visible', timeout: 10000 });
+            return true;
+        } catch {
+            return false;
+        }
     }
 
     async getWidgetCount(): Promise<number> {
+        await this.page.locator(this.widgets).first().waitFor({ state: 'visible', timeout: 10000 });
         return await this.page.locator(this.widgets).count();
     }
 
@@ -70,31 +81,66 @@ export class DashboardPage {
     }
 
     async isTimeAtWorkVisible(): Promise<boolean> {
-        return await this.page.locator(this.timeAtWorkWidget).isVisible();
+        try {
+            await this.page.locator(this.timeAtWorkWidget).waitFor({ state: 'visible', timeout: 10000 });
+            return true;
+        } catch {
+            return false;
+        }
     }
 
     async isMyActionsVisible(): Promise<boolean> {
-        return await this.page.locator(this.myActionsWidget).isVisible();
+        try {
+            await this.page.locator(this.myActionsWidget).waitFor({ state: 'visible', timeout: 10000 });
+            return true;
+        } catch {
+            return false;
+        }
     }
 
     async isQuickLaunchVisible(): Promise<boolean> {
-        return await this.page.locator(this.quickLaunchWidget).isVisible();
+        try {
+            await this.page.locator(this.quickLaunchWidget).waitFor({ state: 'visible', timeout: 10000 });
+            return true;
+        } catch {
+            return false;
+        }
     }
 
     async isBuzzLatestPostsVisible(): Promise<boolean> {
-        return await this.page.locator(this.buzzLatestPostsWidget).isVisible();
+        try {
+            await this.page.locator(this.buzzLatestPostsWidget).waitFor({ state: 'visible', timeout: 10000 });
+            return true;
+        } catch {
+            return false;
+        }
     }
 
     async isEmployeesOnLeaveTodayVisible(): Promise<boolean> {
-        return await this.page.locator(this.employeesOnLeaveTodayWidget).isVisible();
+        try {
+            await this.page.locator(this.employeesOnLeaveTodayWidget).waitFor({ state: 'visible', timeout: 10000 });
+            return true;
+        } catch {
+            return false;
+        }
     }
 
     async isEmployeeDistributionBySubUnitVisible(): Promise<boolean> {
-        return await this.page.locator(this.employeeDistributionBySubUnitWidget).isVisible();
+        try {
+            await this.page.locator(this.employeeDistributionBySubUnitWidget).waitFor({ state: 'visible', timeout: 10000 });
+            return true;
+        } catch {
+            return false;
+        }
     }
 
     async isEmployeeDistributionByLocationVisible(): Promise<boolean> {
-        return await this.page.locator(this.employeeDistributionByLocationWidget).isVisible();
+        try {
+            await this.page.locator(this.employeeDistributionByLocationWidget).waitFor({ state: 'visible', timeout: 10000 });
+            return true;
+        } catch {
+            return false;
+        }
     }
 
     // Navigation from Dashboard
@@ -104,12 +150,33 @@ export class DashboardPage {
         await this.waitForSpinnerToDisappear();
     }
 
+    async navigateToDirectory(): Promise<void> {
+        await this.page.locator(this.directoryNavLink).click();
+        await this.page.waitForURL(/.*directory\/viewDirectory.*/);
+        await this.waitForSpinnerToDisappear();
+    }
+
     // Page Refresh Action
     async refreshDashboard(): Promise<void> {
         await this.page.reload();
         await this.page.waitForURL(/.*dashboard\/index.*/);
         await this.waitForSpinnerToDisappear();
         await this.page.locator(this.pageHeader).waitFor({ state: 'visible', timeout: 15000 });
+    }
+
+    // User Profile & Dropdown
+    async isUserDropdownVisible(): Promise<boolean> {
+        try {
+            await this.page.locator(this.userDropdown).waitFor({ state: 'visible', timeout: 10000 });
+            return true;
+        } catch {
+            return false;
+        }
+    }
+
+    async getUserDropdownName(): Promise<string> {
+        await this.page.locator(this.userDropdownName).waitFor({ state: 'visible', timeout: 10000 });
+        return (await this.page.locator(this.userDropdownName).innerText()).trim();
     }
 
     // Logout Action

@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { LoginPage } from '../pages/login';
+import { LoginPage } from '../pages/loginpage';
 import { AdminPage } from '../pages/adminpage';
 
 test.describe.serial('OrangeHRM Admin Module Tests - AdminTest', () => {

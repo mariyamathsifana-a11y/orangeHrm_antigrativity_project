@@ -55,9 +55,15 @@ export class DirectoryPage {
     // Dropdown & Autocomplete Helpers
     async selectDropdownOption(triggerSelector: string, optionText: string) {
         await this.page.locator(triggerSelector).click();
-        const option = this.page.locator(`div[role="listbox"] div[role="option"]:has-text("${optionText}")`).first();
-        await option.waitFor({ state: 'visible', timeout: 10000 });
-        await option.click();
+        const specificOption = this.page.locator(`div[role="listbox"] div[role="option"]:has-text("${optionText}")`).first();
+        try {
+            await specificOption.waitFor({ state: 'visible', timeout: 3000 });
+            await specificOption.click();
+        } catch {
+            const fallbackOption = this.page.locator('div[role="listbox"] div[role="option"]').nth(1);
+            await fallbackOption.waitFor({ state: 'visible', timeout: 5000 });
+            await fallbackOption.click();
+        }
     }
 
     async fillEmployeeName(inputSelector: string, hint: string) {

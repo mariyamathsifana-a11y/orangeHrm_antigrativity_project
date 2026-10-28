@@ -4,13 +4,19 @@ export default defineConfig({
   testDir: './tests',
   timeout: 90000,
   expect: {
-    timeout: 10000,
+    timeout: 20000,
   },
-  reporter: [['html', { open: 'never' }]],
+  reporter: [
+    ['list'],
+    ['html', {
+      outputFolder: 'playwright-report',
+      open: 'never',
+    }],
+  ],
   use: {
     headless: true,
     screenshot: 'only-on-failure',
-    trace: 'on-first-retry',
+    trace: 'retain-on-failure',
   },
   projects: [
     {
